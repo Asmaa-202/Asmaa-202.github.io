@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Asmaa Salaheldin — Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --navy: #0f2647; --navy-mid: #1a3a6b; --navy-light: #2a5298;
+    --gold: #c9a84c; --gold-light: #e8c97a; --gold-pale: #f5e6c0;
+    --cream: #fdf8ef; --warm-white: #faf6ee; --ink: #1a1208;
+    --ink-soft: #3d2e1a; --muted: #7a6e5e; --paper: #f7f0e2;
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--ink); overflow-x: hidden; cursor: none; }
+  .cursor { width: 12px; height: 12px; background: var(--gold); border-radius: 50%; position: fixed; pointer-events: none; z-index: 9999; transition: transform 0.15s ease; transform: translate(-50%,-50%); }
+  .cursor-ring { width: 36px; height: 36px; border: 1px solid var(--gold); border-radius: 50%; position: fixed; pointer-events: none; z-index: 9998; transform: translate(-50%,-50%); transition: all 0.3s cubic-bezier(.23,1,.32,1); opacity: 0.6; }
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--cream); }
+  ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 4px; }
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 4rem; background: rgba(253,248,239,0.88); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(201,168,76,0.2); }
+  .nav-logo { font-family: 'Cormorant Garamond', serif; font-size: 1.25rem; font-weight: 300; letter-spacing: 0.08em; color: var(--navy); }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a { font-size: 0.78rem; font-weight: 400; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.3s; position: relative; }
+  .nav-links a::after { content: ''; position: absolute; bottom: -3px; left: 0; right: 100%; height: 1px; background: var(--gold); transition: right 0.3s ease; }
+  .nav-links a:hover { color: var(--navy); }
+  .nav-links a:hover::after { right: 0; }
+  .hero { min-height: 100vh; display: flex; align-items: center; padding: 8rem 4rem 4rem; position: relative; overflow: hidden; }
+  .hero-bg-art { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
+  .hero-content { position: relative; z-index: 2; max-width: 680px; }
+  .hero-eyebrow { display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem; }
+  .hero-eyebrow-line { width: 48px; height: 1px; background: var(--gold); }
+  .hero-eyebrow span { font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); font-weight: 500; }
+  .hero-name { font-family: 'Cormorant Garamond', serif; font-size: clamp(3.5rem, 8vw, 6.5rem); font-weight: 300; line-height: 1.02; color: var(--navy); margin-bottom: 0.5rem; }
+  .hero-name em { font-style: italic; color: var(--gold); }
+  .hero-tagline { font-family: 'Cormorant Garamond', serif; font-size: 1.35rem; font-weight: 300; font-style: italic; color: var(--muted); margin-bottom: 2.5rem; line-height: 1.6; }
+  .hero-desc { font-size: 0.95rem; line-height: 1.9; color: var(--ink-soft); max-width: 480px; margin-bottom: 3rem; }
+  .hero-cta { display: flex; gap: 1.5rem; align-items: center; flex-wrap: wrap; }
+  .btn-primary { background: var(--navy); color: var(--gold-pale); border: none; padding: 0.85rem 2.2rem; font-family: 'DM Sans', sans-serif; font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; cursor: none; transition: all 0.3s; text-decoration: none; display: inline-block; }
+  .btn-primary:hover { background: var(--navy-mid); transform: translateY(-2px); }
+  .btn-ghost { color: var(--navy); border-bottom: 1px solid var(--gold); padding-bottom: 3px; font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; cursor: none; transition: all 0.3s; text-decoration: none; display: inline-block; }
+  .btn-ghost:hover { color: var(--gold); }
+  .section { padding: 7rem 4rem; position: relative; }
+  .section-label { display: flex; align-items: center; gap: 1rem; margin-bottom: 3.5rem; }
+  .section-label span { font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); font-weight: 500; }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: linear-gradient(to right, rgba(201,168,76,0.4), transparent); }
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+  .about-heading { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.2rem, 4vw, 3.2rem); font-weight: 300; line-height: 1.2; color: var(--navy); margin-bottom: 1.5rem; }
+  .about-heading em { font-style: italic; color: var(--gold); }
+  .about-body { font-size: 0.95rem; line-height: 1.9; color: var(--ink-soft); margin-bottom: 1.5rem; }
+  .identity-tags { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 2rem; }
+  .tag { border: 1px solid rgba(201,168,76,0.4); color: var(--navy-mid); font-size: 0.72rem; letter-spacing: 0.1em; padding: 0.35rem 0.9rem; text-transform: uppercase; background: rgba(201,168,76,0.05); transition: all 0.3s; }
+  .tag:hover { background: var(--navy); color: var(--gold-pale); border-color: var(--navy); }
+  .skills-bg { background: var(--navy); color: var(--cream); }
+  .skills-bg .section-label span { color: var(--gold-light); }
+  .skills-bg .section-label::after { background: linear-gradient(to right, rgba(232,201,122,0.3), transparent); }
+  .skills-heading { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 4vw, 3rem); font-weight: 300; color: var(--gold-pale); margin-bottom: 4rem; }
+  .skills-heading em { font-style: italic; color: var(--gold-light); }
+  .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 2px; }
+  .skill-block { padding: 2.5rem; background: rgba(255,255,255,0.03); border: 1px solid rgba(201,168,76,0.12); transition: all 0.4s; position: relative; overflow: hidden; }
+  .skill-block::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 0; background: var(--gold); transition: height 0.4s ease; }
+  .skill-block:hover::before { height: 100%; }
+  .skill-block:hover { background: rgba(201,168,76,0.06); }
+  .skill-icon { font-size: 1.5rem; margin-bottom: 1rem; }
+  .skill-title { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-weight: 400; color: var(--gold-pale); margin-bottom: 0.75rem; }
+  .skill-items { font-size: 0.82rem; color: rgba(245,230,192,0.6); line-height: 1.8; letter-spacing: 0.03em; }
+  .projects-heading { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.2rem, 4vw, 3.2rem); font-weight: 300; color: var(--navy); margin-bottom: 4rem; }
+  .projects-heading em { font-style: italic; color: var(--gold); }
+  .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; }
+  .project-card { border: 1px solid rgba(201,168,76,0.2); padding: 2.5rem; background: var(--warm-white); position: relative; overflow: hidden; transition: all 0.4s cubic-bezier(.23,1,.32,1); cursor: none; }
+  .project-card::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: linear-gradient(to right, var(--gold), var(--navy-light)); transform: scaleX(0); transform-origin: left; transition: transform 0.4s ease; }
+  .project-card:hover::after { transform: scaleX(1); }
+  .project-card:hover { transform: translateY(-6px); box-shadow: 0 20px 60px rgba(15,38,71,0.1); }
+  .project-type { font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; font-weight: 500; }
+  .project-name { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 400; color: var(--navy); margin-bottom: 0.75rem; line-height: 1.3; }
+  .project-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.8; margin-bottom: 1.5rem; }
+  .project-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .project-tag { font-size: 0.68rem; letter-spacing: 0.08em; padding: 0.2rem 0.6rem; background: rgba(15,38,71,0.06); color: var(--navy-mid); border-radius: 2px; }
+  .project-card.featured { background: var(--navy); border-color: rgba(201,168,76,0.3); }
+  .project-card.featured .project-type { color: var(--gold-light); }
+  .project-card.featured .project-name { color: var(--gold-pale); }
+  .project-card.featured .project-desc { color: rgba(245,230,192,0.6); }
+  .project-card.featured .project-tag { background: rgba(201,168,76,0.12); color: var(--gold-light); }
+  .exp-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 5rem; align-items: start; }
+  .exp-sticky { position: sticky; top: 120px; }
+  .exp-heading { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 4vw, 3rem); font-weight: 300; line-height: 1.2; color: var(--navy); margin-bottom: 1.5rem; }
+  .exp-heading em { font-style: italic; color: var(--gold); }
+  .exp-list { display: flex; flex-direction: column; gap: 0; }
+  .exp-item { display: grid; grid-template-columns: 80px 1fr; gap: 2rem; padding: 2.5rem 0; border-bottom: 1px solid rgba(201,168,76,0.15); transition: all 0.3s; }
+  .exp-item:hover { padding-left: 1rem; }
+  .exp-year { font-family: 'Cormorant Garamond', serif; font-size: 0.85rem; color: var(--gold); font-style: italic; padding-top: 4px; }
+  .exp-role { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-weight: 400; color: var(--navy); margin-bottom: 0.25rem; }
+  .exp-org { font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.75rem; font-weight: 500; }
+  .exp-detail { font-size: 0.85rem; color: var(--muted); line-height: 1.8; }
+  .contact-bg { background: var(--paper); }
+  .contact-inner { max-width: 640px; margin: 0 auto; text-align: center; }
+  .contact-heading { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 300; color: var(--navy); margin-bottom: 1rem; line-height: 1.15; }
+  .contact-heading em { font-style: italic; color: var(--gold); }
+  .contact-sub { font-size: 0.95rem; color: var(--muted); line-height: 1.9; margin-bottom: 3rem; }
+  .contact-links { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; margin-bottom: 4rem; }
+  .contact-link { display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; border: 1px solid rgba(201,168,76,0.3); color: var(--navy); text-decoration: none; font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; transition: all 0.3s; }
+  .contact-link:hover { background: var(--navy); color: var(--gold-pale); border-color: var(--navy); }
+  .footer-sig { font-family: 'Cormorant Garamond', serif; font-size: 0.9rem; font-style: italic; color: rgba(15,38,71,0.3); margin-top: 4rem; padding-top: 2rem; border-top: 1px solid rgba(201,168,76,0.15); }
+  .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.8s cubic-bezier(.23,1,.32,1), transform 0.8s cubic-bezier(.23,1,.32,1); }
+  .reveal.visible { opacity: 1; transform: none; }
+  .deco-num { font-family: 'Cormorant Garamond', serif; font-size: 8rem; font-weight: 300; color: rgba(201,168,76,0.07); position: absolute; right: 4rem; top: 50%; transform: translateY(-50%); line-height: 1; pointer-events: none; user-select: none; }
+  @media (max-width: 768px) {
+    nav { padding: 1.2rem 1.5rem; }
+    .hero, .section { padding-left: 1.5rem; padding-right: 1.5rem; }
+    .about-grid, .exp-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .nav-links, .deco-num { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<nav>
+  <div class="nav-logo">Asmaa Salaheldin</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<section class="hero" id="home">
+  <svg class="hero-bg-art" viewBox="0 0 1400 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <radialGradient id="g1" cx="80%" cy="30%" r="60%"><stop offset="0%" stop-color="#c9a84c" stop-opacity="0.06"/><stop offset="100%" stop-color="#c9a84c" stop-opacity="0"/></radialGradient>
+      <radialGradient id="g2" cx="70%" cy="70%" r="50%"><stop offset="0%" stop-color="#0f2647" stop-opacity="0.04"/><stop offset="100%" stop-color="#0f2647" stop-opacity="0"/></radialGradient>
+    </defs>
+    <rect width="1400" height="900" fill="url(#g1)"/>
+    <rect width="1400" height="900" fill="url(#g2)"/>
+    <ellipse cx="900" cy="200" rx="320" ry="180" fill="#c9a84c" opacity="0.04" transform="rotate(-15 900 200)"/>
+    <ellipse cx="1050" cy="450" rx="280" ry="220" fill="#0f2647" opacity="0.035" transform="rotate(20 1050 450)"/>
+    <ellipse cx="780" cy="650" rx="250" ry="160" fill="#c9a84c" opacity="0.05" transform="rotate(-8 780 650)"/>
+    <line x1="820" y1="100" x2="1200" y2="320" stroke="#c9a84c" stroke-width="0.5" opacity="0.15"/>
+    <line x1="700" y1="200" x2="1100" y2="500" stroke="#c9a84c" stroke-width="0.3" opacity="0.12"/>
+    <line x1="900" y1="50" x2="1300" y2="400" stroke="#0f2647" stroke-width="0.4" opacity="0.08"/>
+    <g opacity="0.06" fill="#c9a84c">
+      <circle cx="650" cy="150" r="2.5"/><circle cx="700" cy="150" r="2.5"/><circle cx="750" cy="150" r="2.5"/>
+      <circle cx="650" cy="200" r="2.5"/><circle cx="700" cy="200" r="2.5"/><circle cx="750" cy="200" r="2.5"/>
+      <circle cx="650" cy="250" r="2.5"/><circle cx="700" cy="250" r="2.5"/><circle cx="750" cy="250" r="2.5"/>
+      <circle cx="800" cy="150" r="2.5"/><circle cx="850" cy="150" r="2.5"/><circle cx="900" cy="150" r="2.5"/>
+      <circle cx="800" cy="200" r="2.5"/><circle cx="850" cy="200" r="2.5"/><circle cx="900" cy="200" r="2.5"/>
+    </g>
+    <circle cx="1050" cy="400" r="300" fill="none" stroke="#c9a84c" stroke-width="0.6" opacity="0.12"/>
+    <circle cx="1050" cy="400" r="250" fill="none" stroke="#0f2647" stroke-width="0.4" opacity="0.07"/>
+  </svg>
+  <div class="hero-content">
+    <div class="hero-eyebrow reveal"><div class="hero-eyebrow-line"></div><span>Engineering Student · Cairo, Egypt</span></div>
+    <h1 class="hero-name reveal" style="transition-delay:0.1s">Asmaa<br><em>Salaheldin</em></h1>
+    <p class="hero-tagline reveal" style="transition-delay:0.2s">Where logic meets artistry —<br>a builder who also dreams.</p>
+    <p class="hero-desc reveal" style="transition-delay:0.3s">Computer & Systems Engineering student at Ain Shams University. I write backend systems, build IoT devices, train ML models, and believe deeply that the best engineers are also curious artists.</p>
+    <div class="hero-cta reveal" style="transition-delay:0.4s">
+      <a href="#projects" class="btn-primary">View my work</a>
+      <a href="#contact" class="btn-ghost">Get in touch →</a>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="about" style="background:var(--warm-white);">
+  <div class="section-label reveal"><span>About me</span></div>
+  <div class="about-grid">
+    <div class="reveal">
+      <h2 class="about-heading">I build things<br><em>with intention.</em></h2>
+      <p class="about-body">I'm a third-year Computer & Systems Engineering student at the Faculty of Engineering, Ain Shams University — drawn to the intersection of technical precision and creative thinking.</p>
+      <p class="about-body">My journey spans backend development in Java & Spring Boot, IoT systems with ESP32, machine learning classification, OS scheduling algorithms, and software engineering design. I love projects that solve real problems elegantly.</p>
+      <p class="about-body">Beyond engineering, I carry a deep love for design, aesthetics, and the art of making things feel considered — whether it's a REST API or a room's atmosphere.</p>
+    </div>
+    <div class="reveal" style="transition-delay:0.15s">
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:1px; margin-bottom:2rem; background:rgba(201,168,76,0.15);">
+        <div style="background:var(--warm-white); padding:2rem; text-align:center;">
+          <div style="font-family:'Cormorant Garamond',serif; font-size:3rem; font-weight:300; color:var(--navy); line-height:1;">10+</div>
+          <div style="font-size:0.72rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--muted); margin-top:0.5rem;">Projects Built</div>
+        </div>
+        <div style="background:var(--warm-white); padding:2rem; text-align:center;">
+          <div style="font-family:'Cormorant Garamond',serif; font-size:3rem; font-weight:300; color:var(--navy); line-height:1;">2</div>
+          <div style="font-size:0.72rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--muted); margin-top:0.5rem;">Internships</div>
+        </div>
+        <div style="background:var(--warm-white); padding:2rem; text-align:center;">
+          <div style="font-family:'Cormorant Garamond',serif; font-size:3rem; font-weight:300; color:var(--navy); line-height:1;">3</div>
+          <div style="font-size:0.72rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--muted); margin-top:0.5rem;">Languages spoken</div>
+        </div>
+        <div style="background:var(--warm-white); padding:2rem; text-align:center;">
+          <div style="font-family:'Cormorant Garamond',serif; font-size:3rem; font-weight:300; color:var(--navy); line-height:1;">2027</div>
+          <div style="font-size:0.72rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--muted); margin-top:0.5rem;">Graduation Year</div>
+        </div>
+      </div>
+      <div style="padding:2rem; border:1px solid rgba(201,168,76,0.25); background:rgba(201,168,76,0.03);">
+        <div style="font-size:0.7rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold); margin-bottom:1rem; font-weight:500;">Personality & values</div>
+        <div class="identity-tags">
+          <span class="tag">INFJ</span><span class="tag">Curious by nature</span><span class="tag">Detail-obsessed</span>
+          <span class="tag">Problem solver</span><span class="tag">Creative thinker</span><span class="tag">Team player</span>
+          <span class="tag">Aesthetics lover</span><span class="tag">Lifelong learner</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <span class="deco-num">01</span>
+</section>
+
+<section class="section skills-bg" id="skills">
+  <div class="section-label reveal"><span>Technical Skills</span></div>
+  <h2 class="skills-heading reveal">What I work <em>with</em></h2>
+  <div class="skills-grid">
+    <div class="skill-block reveal">
+      <div class="skill-icon">⌨</div>
+      <div class="skill-title">Languages</div>
+      <div class="skill-items">Java · Python · C++<br>SQL · HTML · CSS</div>
+    </div>
+    <div class="skill-block reveal" style="transition-delay:0.05s">
+      <div class="skill-icon">⚙</div>
+      <div class="skill-title">Backend & Frameworks</div>
+      <div class="skill-items">Spring Boot · REST APIs<br>Flyway · Docker · PostgreSQL</div>
+    </div>
+    <div class="skill-block reveal" style="transition-delay:0.1s">
+      <div class="skill-icon">◉</div>
+      <div class="skill-title">IoT & Embedded</div>
+      <div class="skill-items">ESP32 · Arduino · MQTT<br>Arduino IDE · C++ hardware</div>
+    </div>
+    <div class="skill-block reveal" style="transition-delay:0.15s">
+      <div class="skill-icon">◈</div>
+      <div class="skill-title">Machine Learning</div>
+      <div class="skill-items">Scikit-learn · Classification<br>EDA · ROC/AUC · Confusion Matrix</div>
+    </div>
+    <div class="skill-block reveal" style="transition-delay:0.2s">
+      <div class="skill-icon">⬡</div>
+      <div class="skill-title">Tools & Workflow</div>
+      <div class="skill-items">Git · Postman · Swagger<br>MATLAB · Simulink · Docker</div>
+    </div>
+    <div class="skill-block reveal" style="transition-delay:0.25s">
+      <div class="skill-icon">✦</div>
+      <div class="skill-title">Concepts & Design</div>
+      <div class="skill-items">OOP · SDLC · UML · DFD<br>OS Scheduling · SWE Patterns</div>
+    </div>
+  </div>
+  <span class="deco-num" style="color:rgba(201,168,76,0.05)">02</span>
+</section>
+
+<section class="section" id="projects" style="background:var(--cream);">
+  <div class="section-label reveal"><span>Selected Work</span></div>
+  <h2 class="projects-heading reveal">Things I've <em>built</em></h2>
+  <div class="projects-grid">
+
+    <div class="project-card featured reveal">
+      <div class="project-type">★ Featured · Internship</div>
+      <div class="project-name">E-Commerce Backend API</div>
+      <div class="project-desc">Full-featured REST API built during my Brightskies internship — authentication, products, orders, payments. Deployed with Docker, documented with Swagger.</div>
+      <div class="project-tags"><span class="project-tag">Java 21</span><span class="project-tag">Spring Boot</span><span class="project-tag">PostgreSQL</span><span class="project-tag">Docker</span><span class="project-tag">Flyway</span></div>
+    </div>
+
+    <div class="project-card reveal" style="transition-delay:0.05s">
+      <div class="project-type">★ Machine Learning · Team Project</div>
+      <div class="project-name">Credit Card Default Classifier</div>
+      <div class="project-desc">End-to-end ML classification study on 30,000 credit card clients. Role: Modeling & Evaluation Lead — tuned multiple classifiers, produced ROC/AUC curves, confusion matrices, and feature importance analysis.</div>
+      <div class="project-tags"><span class="project-tag">Python</span><span class="project-tag">Scikit-learn</span><span class="project-tag">Logistic Reg</span><span class="project-tag">SVM</span><span class="project-tag">Neural Net</span></div>
+    </div>
+
+    <div class="project-card reveal" style="transition-delay:0.1s">
+      <div class="project-type">Systems · GUI Application</div>
+      <div class="project-name">CPU Scheduler Simulator</div>
+      <div class="project-desc">Live GUI desktop app simulating FCFS, SJF, Priority, and Round Robin scheduling. Features a live Gantt chart, dynamic process arrival, and real-time burst time table. Built the metrics module and report.</div>
+      <div class="project-tags"><span class="project-tag">Java</span><span class="project-tag">GUI</span><span class="project-tag">OS Algorithms</span><span class="project-tag">Gantt Chart</span></div>
+    </div>
+
+    <div class="project-card reveal" style="transition-delay:0.15s">
+      <div class="project-type">IoT · Embedded Systems</div>
+      <div class="project-name">IR Sensor & LED Control</div>
+      <div class="project-desc">ESP32-based IoT system detecting objects in real-time via IR sensor and controlling an LED remotely over MQTT — from a mobile app or dashboard.</div>
+      <div class="project-tags"><span class="project-tag">ESP32</span><span class="project-tag">MQTT</span><span class="project-tag">C++</span><span class="project-tag">Arduino IDE</span></div>
+    </div>
+
+    <div class="project-card reveal" style="transition-delay:0.2s">
+      <div class="project-type">OOP · Team Project</div>
+      <div class="project-name">Dental Clinic Management System</div>
+      <div class="project-desc">Full clinic system with patients, doctors, appointments & prescriptions. I led requirements, user stories, and built the core domain classes with full OOP design.</div>
+      <div class="project-tags"><span class="project-tag">Java</span><span class="project-tag">OOP</span><span class="project-tag">Generics</span><span class="project-tag">Interfaces</span></div>
+    </div>
+
+    <div class="project-card reveal" style="transition-delay:0.25s">
+      <div class="project-type">Software Engineering · Team Project</div>
+      <div class="project-name">Food Rescue Platform</div>
+      <div class="project-desc">Digital platform connecting food donors with NGOs. I handled Milestone 1, Class Diagram, Data Flow Diagram, and the team presentation.</div>
+      <div class="project-tags"><span class="project-tag">SDLC</span><span class="project-tag">UML</span><span class="project-tag">DFD</span><span class="project-tag">User Stories</span></div>
+    </div>
+
+    <div class="project-card reveal" style="transition-delay:0.3s">
+      <div class="project-type">Simulation · Hardware</div>
+      <div class="project-name">Dual-Axis Solar Tracker</div>
+      <div class="project-desc">Motor-controlled solar panel tracker with sensor-based orientation optimization — fully simulated in MATLAB/Simulink with real-world physics modeling.</div>
+      <div class="project-tags"><span class="project-tag">MATLAB</span><span class="project-tag">Simulink</span><span class="project-tag">Control Systems</span></div>
+    </div>
+
+    <div class="project-card reveal" style="transition-delay:0.35s">
+      <div class="project-type">Individual · Discrete Mathematics</div>
+      <div class="project-name">GCD Calculator</div>
+      <div class="project-desc">Solo implementation of two distinct GCD algorithms in C++ with dynamic user input — no built-in functions. Analytical comparison of both approaches.</div>
+      <div class="project-tags"><span class="project-tag">C++</span><span class="project-tag">Algorithms</span><span class="project-tag">Number Theory</span></div>
+    </div>
+
+  </div>
+  <span class="deco-num">03</span>
+</section>
+
+<section class="section" id="experience" style="background:var(--warm-white);">
+  <div class="section-label reveal"><span>Experience</span></div>
+  <div class="exp-grid">
+    <div class="exp-sticky reveal">
+      <h2 class="exp-heading">Where I've <em>grown</em></h2>
+      <p style="font-size:0.88rem; color:var(--muted); line-height:1.9; margin-top:1rem;">Every experience has sharpened both my craft and my curiosity — from industry internships to university labs.</p>
+    </div>
+    <div class="exp-list reveal" style="transition-delay:0.1s">
+      <div class="exp-item">
+        <div class="exp-year">2024</div>
+        <div>
+          <div class="exp-role">Backend Development Intern</div>
+          <div class="exp-org">Brightskies</div>
+          <div class="exp-detail">Built a real-world E-Commerce backend API end-to-end. Worked across the full dev cycle: coding, debugging, testing, cross-team integration, and presenting to company leadership.</div>
+        </div>
+      </div>
+      <div class="exp-item">
+        <div class="exp-year">2025</div>
+        <div>
+          <div class="exp-role">IoT Trainee</div>
+          <div class="exp-org">Sector B5</div>
+          <div class="exp-detail">Designed and built an ESP32-based IoT system using MQTT. Gained deep hands-on experience with embedded systems, WiFi protocols, and real-time messaging.</div>
+        </div>
+      </div>
+      <div class="exp-item">
+        <div class="exp-year">2023–</div>
+        <div>
+          <div class="exp-role">Engineering Student</div>
+          <div class="exp-org">Faculty of Engineering, Ain Shams University</div>
+          <div class="exp-detail">Computer & Systems Engineering, CSYE track. Coursework spanning OOP, Software Engineering, IoT, Machine Learning, OS Scheduling, Discrete Mathematics, and Signals & Systems.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <span class="deco-num">04</span>
+</section>
+
+<section class="section contact-bg" id="contact">
+  <div class="contact-inner">
+    <div class="section-label reveal" style="justify-content:center; text-align:center;"><span>Get in touch</span></div>
+    <h2 class="contact-heading reveal">Let's make<br>something <em>together.</em></h2>
+    <p class="contact-sub reveal" style="transition-delay:0.1s">Open to internship opportunities, collaboration on interesting projects, or simply a good conversation about technology and ideas.</p>
+    <div class="contact-links reveal" style="transition-delay:0.2s">
+      <a href="mailto:asmaasalaheldin586@gmail.com" class="contact-link">✉ Email me</a>
+      <a href="https://www.linkedin.com/in/asmaa-salaheldin-0695a3288" class="contact-link" target="_blank">↗ LinkedIn</a>
+      <a href="https://github.com/Asmaa-202" class="contact-link" target="_blank">↗ GitHub</a>
+      <a href="tel:+201095620032" class="contact-link">✆ +20 109 562 0032</a>
+    </div>
+    <div class="footer-sig reveal" style="transition-delay:0.3s">Designed & built with care · Asmaa Salaheldin · Cairo, Egypt · 2026</div>
+  </div>
+</section>
+
+<script>
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
+  document.addEventListener('mousemove', e => {
+    mouseX = e.clientX; mouseY = e.clientY;
+    cursor.style.left = mouseX + 'px'; cursor.style.top = mouseY + 'px';
+  });
+  function animateRing() {
+    ringX += (mouseX - ringX) * 0.12; ringY += (mouseY - ringY) * 0.12;
+    ring.style.left = ringX + 'px'; ring.style.top = ringY + 'px';
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+  document.querySelectorAll('a, button, .project-card, .skill-block, .tag').forEach(el => {
+    el.addEventListener('mouseenter', () => { cursor.style.transform = 'translate(-50%,-50%) scale(2.5)'; ring.style.transform = 'translate(-50%,-50%) scale(1.5)'; ring.style.opacity = '0.3'; });
+    el.addEventListener('mouseleave', () => { cursor.style.transform = 'translate(-50%,-50%) scale(1)'; ring.style.transform = 'translate(-50%,-50%) scale(1)'; ring.style.opacity = '0.6'; });
+  });
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+</script>
+</body>
+</html>
